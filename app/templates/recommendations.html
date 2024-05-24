@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container">
         <h1 class="recommendation-title">Recomendações de Filmes</h1>
         {% if recommendations %}
             <div id="recommendationCarousel" class="carousel slide mt-4" data-ride="carousel">
@@ -25,6 +25,8 @@
                                                 <h5 class="card-title">{{ movie['title'] }}</h5>
                                                 <p class="card-text"><i class="fas fa-calendar-alt"></i> Lançamento: {{ movie['release_date']|format_date }}</p>
                                                 <p class="card-text">{{ movie['overview'] }}</p>
+                                                <p class="card-text"><strong>Diretor:</strong> {{ movie['director'] }}</p>
+                                                <p class="card-text"><strong>Elenco:</strong> {{ movie['cast'] }}</p>
                                                 {% if movie.trailer_url %}
                                                     <a href="{{ movie.trailer_url }}" class="trailer-link" target="_blank"><i class="fas fa-play"></i> Assistir Trailer</a>
                                                 {% else %}
@@ -53,7 +55,6 @@
         {% endif %}
         <div class="button-group">
             <a href="{{ url_for('main.home') }}" class="back-button"><i class="fas fa-arrow-left"></i> Voltar</a>
-            <button class="save-favorites-button"><i class="fas fa-heart"></i> Salvar Favoritos</button>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

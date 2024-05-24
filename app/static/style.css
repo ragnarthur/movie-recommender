@@ -26,13 +26,31 @@ body {
 .form-group label {
     color: #fff;
     font-family: 'Slabo 27px', serif;
+    font-size: 1.2rem;  /* Aumentando levemente o tamanho do texto */
 }
 
 .logo {
     width: 100%;
-    max-width: 400px;
+    max-width: 430px;
     height: auto;
     margin-bottom: 1rem;
+}
+
+h1.mt-3 {
+    font-size: 4rem; /* Aumentando o tamanho do texto para a saudação */
+    font-weight: bold;
+}
+
+p.lead {
+    font-size: 1.5rem; /* Aumentando o tamanho do texto do parágrafo */
+}
+
+.form-control {
+    font-size: 1.2rem; /* Aumentando o tamanho do texto dentro dos inputs */
+}
+
+.btn-primary {
+    font-size: 1.4rem; /* Aumentando o tamanho do texto do botão */
 }
 
 .card {
@@ -46,16 +64,17 @@ body {
 }
 
 .card-body {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7); /* Fundo mais escuro */
     color: #fff;
     padding: 1rem;
     border-radius: 0 0 10px 10px;
     font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
+    font-size: 1.4rem; /* Aumentando levemente o tamanho do texto */
 }
 
 .card-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    color: #ffcc00; /* Cor amarela para contraste */
 }
 
 .movie-card {
@@ -87,7 +106,7 @@ body {
 
 .recommendation-title {
     font-size: 4rem;
-    color: #ffffff;
+    color: #d4eb09;
     font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     margin-bottom: 2rem;
@@ -100,12 +119,12 @@ body {
     margin-top: 2rem;
 }
 
-.back-button, .save-favorites-button {
+.back-button {
     background-color: #007bff;
     color: #fff;
     border: none;
     padding: 0.5rem 1rem;
-    font-size: 1rem;
+    font-size: 1.2rem; /* Aumentando levemente o tamanho do texto */
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -162,5 +181,36 @@ body {
 }
 
 #loading-overlay {
-    animation: pulsate 1s infinite;
+    animation: pulsate 1.4s infinite;
+}
+
+/* Regras de mídia para garantir a responsividade */
+@media (max-width: 768px) {
+    .recommendation-title {
+        font-size: 2.5rem;
+    }
+    .card-body {
+        font-size: 1rem;
+    }
+    .card-title {
+        font-size: 1.5rem;
+    }
+    .back-button, .save-favorites-button {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .recommendation-title {
+        font-size: 2rem;
+    }
+    .card-body {
+        font-size: 0.9rem;
+    }
+    .card-title {
+        font-size: 1.3rem;
+    }
+    .back-button, .save-favorites-button {
+        font-size: 0.9rem;
+    }
 }

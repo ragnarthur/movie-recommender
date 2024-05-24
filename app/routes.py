@@ -1,10 +1,9 @@
 from flask import Flask, Blueprint, render_template, request
 import requests
 from datetime import datetime
-from flask_caching import Cache
+import threading
 
 app = Flask(__name__)
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 main = Blueprint('main', __name__)
 
@@ -40,7 +39,6 @@ def recommend():
     recommendations = get_recommendations(genre_id, year, min_rating, max_rating)
     return render_template('recommendations.html', recommendations=recommendations)
 
-@cache.cached(timeout=3600, key_prefix='genres')
 def get_genres():
     url = 'https://api.themoviedb.org/3/genre/movie/list'
     params = {
@@ -50,7 +48,6 @@ def get_genres():
     data = response.json()
     return data['genres']
 
-@cache.cached(timeout=3600, key_prefix=lambda: request.form.get('genre') + request.form.get('year') + request.form.get('rating'))
 def get_recommendations(genre_id, year, min_rating, max_rating):
     url = 'https://api.themoviedb.org/3/discover/movie'
     params = {
@@ -66,14 +63,22 @@ def get_recommendations(genre_id, year, min_rating, max_rating):
     data = response.json()
     recommendations = data['results'][:10]  # Retorna os top 10 mais votados
 
+    threads = []
     for movie in recommendations:
-        movie_id = movie['id']
-        trailer_url = get_trailer_url(movie_id)
-        movie['trailer_url'] = trailer_url
+        thread = threading.Thread(target=add_movie_details, args=(movie,))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
 
     return recommendations
 
-@cache.cached(timeout=3600, key_prefix=lambda movie_id: str(movie_id))
+def add_movie_details(movie):
+    movie_id = movie['id']
+    movie['trailer_url'] = get_trailer_url(movie_id)
+    movie['director'], movie['cast'] = get_movie_credits(movie_id)
+
 def get_trailer_url(movie_id):
     url = f'https://api.themoviedb.org/3/movie/{movie_id}/videos'
     params = {
@@ -85,6 +90,14 @@ def get_trailer_url(movie_id):
         if video['type'] == 'Trailer' and video['site'] == 'YouTube':
             return f'https://www.youtube.com/watch?v={video["key"]}'
     return None
+
+def get_movie_credits(movie_id):
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}/credits'
+    response = requests.get(url, headers=HEADERS)
+    data = response.json()
+    director = next((member['name'] for member in data['crew'] if member['job'] == 'Director'), 'N/A')
+    cast = ', '.join([member['name'] for member in data['cast'][:3]])  # Pegue os 3 principais membros do elenco
+    return director, cast
 
 app.register_blueprint(main)
 
