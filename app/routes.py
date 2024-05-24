@@ -25,7 +25,15 @@ def home():
 def recommend():
     genre_id = request.form.get('genre')
     year = request.form.get('year')
-    recommendations = get_recommendations(genre_id, year)
+    rating = request.form.get('rating')
+    
+    min_rating, max_rating = (None, None)
+    if rating == '0-5':
+        min_rating, max_rating = 0, 5
+    elif rating == '5-10':
+        min_rating, max_rating = 5, 10
+    
+    recommendations = get_recommendations(genre_id, year, min_rating, max_rating)
     return render_template('recommendations.html', recommendations=recommendations)
 
 def get_genres():
@@ -37,15 +45,17 @@ def get_genres():
     data = response.json()
     return data['genres']
 
-def get_recommendations(genre_id, year):
+def get_recommendations(genre_id, year, min_rating, max_rating):
     url = 'https://api.themoviedb.org/3/discover/movie'
     params = {
         'sort_by': 'vote_average.desc',
         'vote_count.gte': 1000,
         'with_genres': genre_id,
         'primary_release_year': year,
+        'vote_average.gte': min_rating,
+        'vote_average.lte': max_rating,
         'language': 'pt-BR'
     }
     response = requests.get(url, headers=HEADERS, params=params)
     data = response.json()
-    return data['results'][:10]  # Retorna os top 10 mais votados
+    return data['results'][:20]  # Retorna os top 20 mais votados

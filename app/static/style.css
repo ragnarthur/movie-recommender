@@ -18,7 +18,7 @@ body {
     padding: 2rem;
     border-radius: 10px;
     width: 100%;
-    max-width: 600px;
+    max-width: 900px; /* Aumentar a largura máxima */
     text-align: center;
 }
 
@@ -28,7 +28,8 @@ body {
 }
 
 .logo {
-    width: 350px;
+    width: 100%;
+    max-width: 400px;
     height: auto;
     margin-bottom: 1rem;
 }
@@ -115,9 +116,46 @@ body {
 }
 
 .back-button:hover, .save-favorites-button:hover {
-    background-color: #e6e8eb;
+    background-color: #0056b3;
 }
 
 .back-button i, .save-favorites-button i {
     margin-right: 0.5rem;
+}
+
+/* Regras de mídia para garantir a responsividade */
+@media (max-width: 768px) {
+    .recommendation-title {
+        font-size: 3rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .btn {
+        font-size: 1rem;
+    }
+    .card-body {
+        font-size: 0.9rem;
+    }
+    .card-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .recommendation-title {
+        font-size: 2.5rem;
+    }
+    .form-group {
+        margin-bottom: 0.5rem;
+    }
+    .btn {
+        font-size: 0.9rem;
+    }
+    .card-body {
+        font-size: 0.8rem;
+    }
+    .card-title {
+        font-size: 1.1rem;
+    }
 }
