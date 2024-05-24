@@ -12,8 +12,8 @@ CineTop is a Flask web application that provides movie recommendations using the
 
 ## Screenshots
 
-![Home Page](screenshots/home.jpeg)
-![Recommendations Page](screenshots/recommendations.jpeg)   
+![Home Page](screenshots/home.png)
+![Recommendations Page](screenshots/recommendations.png)   
 
 ## Installation
 
