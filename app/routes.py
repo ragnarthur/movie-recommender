@@ -1,6 +1,10 @@
-from flask import Blueprint, render_template, request
+from flask import Flask, Blueprint, render_template, request
 import requests
 from datetime import datetime
+from flask_caching import Cache
+
+app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 main = Blueprint('main', __name__)
 
@@ -36,6 +40,7 @@ def recommend():
     recommendations = get_recommendations(genre_id, year, min_rating, max_rating)
     return render_template('recommendations.html', recommendations=recommendations)
 
+@cache.cached(timeout=3600, key_prefix='genres')
 def get_genres():
     url = 'https://api.themoviedb.org/3/genre/movie/list'
     params = {
@@ -45,6 +50,7 @@ def get_genres():
     data = response.json()
     return data['genres']
 
+@cache.cached(timeout=3600, key_prefix=lambda: request.form.get('genre') + request.form.get('year') + request.form.get('rating'))
 def get_recommendations(genre_id, year, min_rating, max_rating):
     url = 'https://api.themoviedb.org/3/discover/movie'
     params = {
@@ -58,4 +64,29 @@ def get_recommendations(genre_id, year, min_rating, max_rating):
     }
     response = requests.get(url, headers=HEADERS, params=params)
     data = response.json()
-    return data['results'][:20]  # Retorna os top 20 mais votados
+    recommendations = data['results'][:10]  # Retorna os top 10 mais votados
+
+    for movie in recommendations:
+        movie_id = movie['id']
+        trailer_url = get_trailer_url(movie_id)
+        movie['trailer_url'] = trailer_url
+
+    return recommendations
+
+@cache.cached(timeout=3600, key_prefix=lambda movie_id: str(movie_id))
+def get_trailer_url(movie_id):
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}/videos'
+    params = {
+        'language': 'en-US'  # A maioria dos trailers está disponível em inglês
+    }
+    response = requests.get(url, headers=HEADERS, params=params)
+    data = response.json()
+    for video in data['results']:
+        if video['type'] == 'Trailer' and video['site'] == 'YouTube':
+            return f'https://www.youtube.com/watch?v={video["key"]}'
+    return None
+
+app.register_blueprint(main)
+
+if __name__ == '__main__':
+    app.run(debug=True)

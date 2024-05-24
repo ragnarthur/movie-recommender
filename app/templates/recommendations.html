@@ -25,6 +25,11 @@
                                                 <h5 class="card-title">{{ movie['title'] }}</h5>
                                                 <p class="card-text"><i class="fas fa-calendar-alt"></i> Lançamento: {{ movie['release_date']|format_date }}</p>
                                                 <p class="card-text">{{ movie['overview'] }}</p>
+                                                {% if movie.trailer_url %}
+                                                    <a href="{{ movie.trailer_url }}" class="trailer-link" target="_blank"><i class="fas fa-play"></i> Assistir Trailer</a>
+                                                {% else %}
+                                                    <p>Trailer não disponível</p>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
