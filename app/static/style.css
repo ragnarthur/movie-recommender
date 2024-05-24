@@ -92,13 +92,20 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Estilo para o botão Voltar */
-.back-button {
+/* Estilo para os botões */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.back-button, .save-favorites-button {
     background-color: #007bff;
     color: #fff;
     border: none;
     padding: 0.5rem 1rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -107,10 +114,10 @@ body {
     transition: background-color 0.3s;
 }
 
-.back-button:hover {
-    background-color: #0056b3;
+.back-button:hover, .save-favorites-button:hover {
+    background-color: #e6e8eb;
 }
 
-.back-button i {
+.back-button i, .save-favorites-button i {
     margin-right: 0.5rem;
 }
