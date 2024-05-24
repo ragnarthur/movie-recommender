@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineTop - Recomendações</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="recommendation-title">Recomendações de Filmes</h1>
+        {% if recommendations %}
+            <div id="recommendationCarousel" class="carousel slide mt-4" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for movie in recommendations %}
+                        {% if loop.index0 % 2 == 0 %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <div class="row">
+                        {% endif %}
+                                    <div class="col-md-6 mb-4">
+                                        <div class="card movie-card">
+                                            <img src="https://image.tmdb.org/t/p/w500{{ movie['poster_path'] }}" class="card-img-top" alt="{{ movie['title'] }}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ movie['title'] }}</h5>
+                                                <p class="card-text"><i class="fas fa-calendar-alt"></i> Lançamento: {{ movie['release_date']|format_date }}</p>
+                                                <p class="card-text">{{ movie['overview'] }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                        {% if loop.index0 % 2 == 1 or loop.last %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev custom-carousel-control" href="#recommendationCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon custom-carousel-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next custom-carousel-control" href="#recommendationCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon custom-carousel-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Próximo</span>
+                </a>
+            </div>
+        {% else %}
+            <p>Nenhuma recomendação encontrada.</p>
+        {% endif %}
+        <a href="{{ url_for('main.home') }}" class="back-button mt-4"><i class="fas fa-arrow-left"></i> Voltar</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Adicionar Font Awesome -->
+</body>
+</html>
