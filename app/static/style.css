@@ -166,11 +166,12 @@ p.lead {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);  /* Fundo mais escuro */
     z-index: 10;
-    display: none;  /* Esconde o overlay por padrão */
+      /* Esconde o overlay por padrão */
     align-items: center;  /* Alinha verticalmente ao centro */
     justify-content: center;  /* Alinha horizontalmente ao centro */
     font-size: 2rem;
     color: #fff;
+    display: flex;  /* Corrige a exibição do overlay */
 }
 
 /* Animação para o texto "Pesquisando..." */
