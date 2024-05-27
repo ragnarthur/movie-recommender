@@ -1,7 +1,6 @@
 from flask import Flask, Blueprint, render_template, request
 import requests
 from datetime import datetime
-import threading
 
 app = Flask(__name__)
 
@@ -48,6 +47,9 @@ def get_genres():
     data = response.json()
     return data['genres']
 
+# Define a global genre map
+GENRE_MAP = {genre['id']: genre['name'] for genre in get_genres()}
+
 def get_recommendations(genre_id, year, min_rating, max_rating):
     url = 'https://api.themoviedb.org/3/discover/movie'
     params = {
@@ -63,21 +65,15 @@ def get_recommendations(genre_id, year, min_rating, max_rating):
     data = response.json()
     recommendations = data['results'][:10]  # Retorna os top 10 mais votados
 
-    threads = []
     for movie in recommendations:
-        thread = threading.Thread(target=add_movie_details, args=(movie,))
-        threads.append(thread)
-        thread.start()
-
-    for thread in threads:
-        thread.join()
+        movie_id = movie['id']
+        trailer_url = get_trailer_url(movie_id)
+        movie['trailer_url'] = trailer_url
+        movie['vote_average'] = f"{movie['vote_average']:.1f}"  # Formatar a avaliação com uma casa decimal
+        movie['director'], movie['cast'] = get_movie_credits(movie_id)
+        movie['genres'] = ", ".join([GENRE_MAP[genre_id] for genre_id in movie['genre_ids']])
 
     return recommendations
-
-def add_movie_details(movie):
-    movie_id = movie['id']
-    movie['trailer_url'] = get_trailer_url(movie_id)
-    movie['director'], movie['cast'] = get_movie_credits(movie_id)
 
 def get_trailer_url(movie_id):
     url = f'https://api.themoviedb.org/3/movie/{movie_id}/videos'
