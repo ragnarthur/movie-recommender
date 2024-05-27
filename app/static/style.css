@@ -166,7 +166,7 @@ p.lead {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);  /* Fundo mais escuro */
     z-index: 10;
-      /* Esconde o overlay por padrão */
+    display: none;  /* Esconde o overlay por padrão */
     align-items: center;  /* Alinha verticalmente ao centro */
     justify-content: center;  /* Alinha horizontalmente ao centro */
     font-size: 2rem;
