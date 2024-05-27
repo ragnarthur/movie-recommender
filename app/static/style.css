@@ -171,6 +171,7 @@ p.lead {
     justify-content: center;  /* Alinha horizontalmente ao centro */
     font-size: 2rem;
     color: #fff;
+    display: flex;  /* Corrige a exibição do overlay */
 }
 
 /* Animação para o texto "Pesquisando..." */
