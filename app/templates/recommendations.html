@@ -24,14 +24,16 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ movie['title'] }}</h5>
                                                 <p class="card-text"><i class="fas fa-calendar-alt"></i> Lançamento: {{ movie['release_date']|format_date }}</p>
-                                                <p class="card-text">{{ movie['overview'] }}</p>
+                                                <p class="card-text"><i class="fas fa-star"></i> Avaliação: {{ movie['vote_average'] }}/10</p>
                                                 <p class="card-text"><strong>Diretor:</strong> {{ movie['director'] }}</p>
                                                 <p class="card-text"><strong>Elenco:</strong> {{ movie['cast'] }}</p>
+                                                <p class="card-text"><strong>Gêneros:</strong> {{ movie['genres'] }}</p>
                                                 {% if movie.trailer_url %}
                                                     <a href="{{ movie.trailer_url }}" class="trailer-link" target="_blank"><i class="fas fa-play"></i> Assistir Trailer</a>
                                                 {% else %}
                                                     <p>Trailer não disponível</p>
                                                 {% endif %}
+                                                <a href="https://www.themoviedb.org/movie/{{ movie['id'] }}" target="_blank" class="more-info-link"><i class="fas fa-info-circle"></i> Mais Informações</a>
                                             </div>
                                         </div>
                                     </div>
@@ -57,7 +59,7 @@
             <a href="{{ url_for('main.home') }}" class="back-button"><i class="fas fa-arrow-left"></i> Voltar</a>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Adicionar Font Awesome -->
